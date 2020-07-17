@@ -1,6 +1,5 @@
 package cn.blue.mvcFramework.annotation;
 
-import javax.xml.bind.Element;
 import java.lang.annotation.*;
 
 /**
@@ -11,9 +10,9 @@ import java.lang.annotation.*;
  *
  * @date 2020/7/16 20:18
  */
-@Target({ElementType.TYPE})
+@Target({ElementType.TYPE,ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface BlueController {
+public @interface BlueRequestMapping {
     String value() default "";
 }

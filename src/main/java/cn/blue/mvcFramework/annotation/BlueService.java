@@ -1,6 +1,5 @@
 package cn.blue.mvcFramework.annotation;
 
-import javax.xml.bind.Element;
 import java.lang.annotation.*;
 
 /**
@@ -14,6 +13,6 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface BlueController {
+public @interface BlueService {
     String value() default "";
 }
