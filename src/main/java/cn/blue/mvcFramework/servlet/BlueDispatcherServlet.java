@@ -2,6 +2,7 @@ package cn.blue.mvcFramework.servlet;
 
 import cn.blue.mvcFramework.annotation.BlueAutowired;
 import cn.blue.mvcFramework.annotation.BlueController;
+import cn.blue.mvcFramework.annotation.BlueRequestMapping;
 import cn.blue.mvcFramework.annotation.BlueService;
 
 import javax.servlet.ServletConfig;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.*;
 
@@ -31,6 +33,7 @@ public class  BlueDispatcherServlet extends HttpServlet {
 
     private Map<String,Object> ioc = new HashMap<String,Object>();
 
+    private Map<String, Method> handlerMapping  = new HashMap<String,Method>();
 
 
     @Override
@@ -64,6 +67,18 @@ public class  BlueDispatcherServlet extends HttpServlet {
     }
 
     private void initHandlerMapping() {
+        if(ioc.isEmpty()){return;};
+
+        for(Map.Entry<String,Object> entry:ioc.entrySet()){
+           Class<?> clazz = entry.getValue().getClass();
+
+           if(!clazz.isAnnotationPresent(BlueController.class)){continue;};
+
+           String baseUrl = "";
+           if(clazz.isAnnotationPresent(BlueRequestMapping.class)){
+                clazz.getAnnotatedInterfaces();
+           }
+        }
     }
 
     private void doAutowried() {
@@ -72,7 +87,6 @@ public class  BlueDispatcherServlet extends HttpServlet {
         }
         //Map ioc中所有的对象都是Entry,
         for(Map.Entry<String,Object> entry:ioc.entrySet()){
-
 
             /*
                 类只有一个，但字段有很多，所以要用数组装。
@@ -103,7 +117,6 @@ public class  BlueDispatcherServlet extends HttpServlet {
                 }
 
             }
-
         }
     }
 
@@ -114,7 +127,7 @@ public class  BlueDispatcherServlet extends HttpServlet {
 
        try{
             for(String className:classNames){
-                System.out.println(className);
+
                 Class<?> clazz = Class.forName(className);
                 //接下来进入bean的实例化阶段，初始化IOC容器
 
@@ -137,7 +150,10 @@ public class  BlueDispatcherServlet extends HttpServlet {
 
                     ioc.put(beanName,clazz.newInstance());
                 }
-
+                /*
+                    在这里的代码使得被修饰的实现类和接口都能被扫描到。
+                    因为受判断控制，没有注解修饰的化，扫描接口的代码就不走
+                 */
                 if(iService){
                     //2. 如果用户自定义名字，那么要先选择自定义名字
                     BlueService service = clazz.getAnnotation(BlueService.class);
@@ -187,7 +203,7 @@ public class  BlueDispatcherServlet extends HttpServlet {
        File classDir = new File(url.getFile());
 
 
-        //进行递归扫描
+        //进行递归扫描原理比较简单，是文件夹就再扫
        for(File file:classDir.listFiles()){
             if(file.isDirectory()){
                 doScanner(packageName+"."+file.getName());
@@ -198,6 +214,8 @@ public class  BlueDispatcherServlet extends HttpServlet {
                 classNames.add(className);
             }
        }
+       //通过这里的打桩可以看到，不管加不加注解，在指定包下的类都可以扫描到。
+        System.out.println(classNames);
     }
 
     private void doLoadConfig(String location) {
