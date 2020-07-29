@@ -1,6 +1,6 @@
 package cn.blue.demo.mvc.action;
 
-import cn.blue.demo.service.impl.IDemoService;
+import cn.blue.demo.service.IDemoService;
 import cn.blue.mvcFramework.annotation.BlueAutowired;
 import cn.blue.mvcFramework.annotation.BlueController;
 import cn.blue.mvcFramework.annotation.BlueRequestMapping;
@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * @author blue
  * @ClassName DemoAction
- * @Description
+ * @Description 这里用了许多自己开发的注解代替原版注解，原版注解需要导包才能用
  *
  * @date 2020/7/16 18:44
  */

@@ -17,14 +17,19 @@
   </welcome-file-list>
 
   <servlet>
-    <servlet-name>uData</servlet-name>
-    <servlet-class>cn.blue.mvcFramework.servlet.GDPispatcherServlet</servlet-class>
-    <load-on-startup>0</load-on-startup>
+    <servlet-name>BlueMvc</servlet-name>
+    <servlet-class>cn.blue.mvcFramework.servlet.BlueDispatcherServlet</servlet-class>
+<!--  配置一个常量  -->
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>application.properties</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
   </servlet>
 
-  <!--  拦截-->
+  <!-- 拦截-->
   <servlet-mapping>
-    <servlet-name>uData</servlet-name>
+    <servlet-name>BlueMvc</servlet-name>
     <url-pattern>/*</url-pattern>
   </servlet-mapping>
 

@@ -1,10 +1,10 @@
 cn\blue\demo\mvc\action\TwoAction.class
+cn\blue\demo\service\IDemoService.class
 cn\blue\mvcFramework\annotation\BlueRequestMapping.class
-cn\blue\mvcFramework\servlet\GDPispatcherServlet.class
 cn\blue\mvcFramework\annotation\BlueService.class
 cn\blue\mvcFramework\annotation\BlueAutowired.class
 cn\blue\mvcFramework\annotation\BlueController.class
+cn\blue\mvcFramework\servlet\BlueDispatcherServlet.class
 cn\blue\demo\mvc\action\DemoAction.class
-cn\blue\demo\service\impl\IDemoService.class
 cn\blue\demo\service\impl\DemoService.class
 cn\blue\mvcFramework\annotation\BlueRequestParam.class

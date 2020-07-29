@@ -1,6 +1,6 @@
 package cn.blue.demo.mvc.action;
 
-import cn.blue.demo.service.impl.IDemoService;
+import cn.blue.demo.service.IDemoService;
 import cn.blue.mvcFramework.annotation.BlueAutowired;
 import cn.blue.mvcFramework.annotation.BlueController;
 import cn.blue.mvcFramework.annotation.BlueRequestMapping;
