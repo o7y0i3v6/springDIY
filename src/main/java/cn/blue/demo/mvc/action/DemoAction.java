@@ -37,7 +37,7 @@ public class DemoAction   {
        }
    }
 
-   @BlueRequestMapping("/query.json")
+   @BlueRequestMapping("/edit.json")
    public void edit(HttpServletRequest req ,HttpServletResponse resp,
                     @BlueRequestParam("id") Integer id){
 

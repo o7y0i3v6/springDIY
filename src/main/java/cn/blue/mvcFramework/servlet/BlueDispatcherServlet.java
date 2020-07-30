@@ -38,13 +38,36 @@ public class  BlueDispatcherServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
+        this.doPost(req, resp);
     }
 
     //6.等待请求，进入运行阶段
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+        //用户请求得url
+        String url = req.getRequestURI();
+        //获得一个相对路径
+        String contextPath = req.getContextPath();
+
+        System.out.println("url: "+url);
+        System.out.println("contextPath: "+contextPath);
+
+
+        url.replace(contextPath,"").replaceAll("/+","/");
+
+        if(!handlerMapping.containsKey(url)){
+            resp.getWriter().write("404 not Found!!");
+            return;
+        }
+
+        Method m = handlerMapping.get(url);
+        /*
+            反射的方法
+            需要两个参数，第一个拿到这个method的insstance，第二个参数，要拿到实参
+            从request中取值
+         */
+        //m.invoke( )
+        //System.out.println("=========="+m);
     }
 
     /**
@@ -75,9 +98,29 @@ public class  BlueDispatcherServlet extends HttpServlet {
            if(!clazz.isAnnotationPresent(BlueController.class)){continue;};
 
            String baseUrl = "";
+           //去找被RequestMapping注解修饰的类
            if(clazz.isAnnotationPresent(BlueRequestMapping.class)){
-                clazz.getAnnotatedInterfaces();
+               //拿到类上的注解
+               BlueRequestMapping blueRequestMapping =  clazz.getAnnotation(BlueRequestMapping.class);
+               //如果给注解传参数了，拿到参数值,和controller注解搭配RequestMapping注解一定有值。
+               baseUrl = blueRequestMapping.value();
            }
+            //把所有方法全部获取到
+            Method[] methods = clazz.getMethods();
+            for(Method method:methods){
+                if(!method.isAnnotationPresent(BlueRequestMapping.class)){continue;}
+                //拿到方法上的注解
+                BlueRequestMapping blueRequestMapping =  method.getAnnotation(BlueRequestMapping.class);
+
+                String  url = (baseUrl+blueRequestMapping.value()).replaceAll("/+","/");
+//                System.out.println("baseUrl:"+baseUrl);
+//                System.out.println("value():"+blueRequestMapping.value());
+                handlerMapping.put(url,method);
+
+                System.out.println("Mapping:"+url+",method:"+method);
+
+
+            }
         }
     }
 
